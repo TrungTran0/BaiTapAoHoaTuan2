@@ -1,0 +1,43 @@
+from ._anvil_designer import Form1Template
+from anvil import *
+
+
+class Form1(Form1Template):
+  def __init__(self, **properties):
+    # Set Form properties and Data Bindings.
+    self.init_components(**properties)
+    self.button_1.set_event_handler("click", self.button_1_click)
+    # Any code you write here will run before the form opens.
+
+  def sap_xep_tang_dan(self, arr):
+        n = len(arr)
+        for i in range(n - 1):
+            for j in range(n - i - 1):
+                if arr[j] > arr[j + 1]:
+                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+    
+  def sap_xep_giam_dan(self, arr):
+      n = len(arr)
+      for i in range(n - 1):
+          for j in range(n - i - 1):
+              if arr[j] < arr[j + 1]:
+                  arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+  def button_1_click(self, **event_args):
+      n = int(self.text_box_1.text)
+      elements = [int(x.strip()) for x in self.text_box_2.text.split(",")]
+
+      self.sap_xep_tang_dan(elements)
+      self.sap_xep_giam_dan(elements)
+
+      self.text_box_3.text = ", ".join(map(str, elements))
+      self.text_box_4.text = ", ".join(map(str, reversed(elements)))
+
+  def text_box_1_change(self, **event_args):
+      if not self.text_box_1.text.isdigit() or int(self.text_box_1.text) < 0:
+          self.text_box_1.text = ""
+          alert("Vui lòng nhập một số nguyên dương.")
+
+  def text_box_2_change(self, **event_args):
+      self.text_box_2.text = self.text_box_2.text.strip()
